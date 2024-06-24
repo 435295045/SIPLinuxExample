@@ -156,6 +156,7 @@ extern "C"
         sip_sdk_observer *sdk_observer;          // 状态回调
         sdk_bool_t allow_multiple_connections;   // 允许多个连接
         sdk_bool_t domain_name_direct_registrar; // 域名注册
+        sdk_bool_t does_it_support_broadcast;    // 是否支持广播
         char *data_dir;                          // 操作目录
     } sip_sdk_common_config;
 

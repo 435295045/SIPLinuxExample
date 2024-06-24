@@ -133,6 +133,7 @@ namespace sip
         static char *data_dir = "/data";
         sip_sdk_config.data_dir = data_dir;
         sip_sdk_config.sdk_observer = &sdk_observer;
+        sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
         // 初始化媒体
         sipmedia::init();
         // 初始化sdk
