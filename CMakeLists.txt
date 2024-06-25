@@ -4,7 +4,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug) #Release Debug
-set(CM_BUILD_OPTION "arm_ez") #x86_64 arm arm_ez mips
+set(CM_BUILD_OPTION "arm") #x86_64 arm arm_ez mips
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
         set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -s")
