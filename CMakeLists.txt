@@ -4,7 +4,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug) #Release Debug
-set(CM_BUILD_OPTION "arm") #x86_64 arm mips
+set(CM_BUILD_OPTION "arm_ez") #x86_64 arm arm_ez mips
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
         set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -s")
@@ -30,6 +30,24 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm")
 
         set(LIB_FILES 
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm/lib/libsipsdk.so
+        )
+
+        set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
+elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
+        #配置编译工具链
+        set(CMAKE_SYSTEM_PROCESSOR arm)
+        set(tools /home/ubuntu/project/sip_linux_sdk/resources/gcc-7.4.0-x86_64_arm-ez-linux-uclibcgnueabihf)
+        set(CMAKE_C_COMPILER ${tools}/bin/arm-ez-linux-uclibcgnueabihf-gcc)
+        set(CMAKE_CXX_COMPILER ${tools}/bin/arm-ez-linux-uclibcgnueabihf-g++)
+
+        
+        include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/src
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/include
+        )
+
+        set(LIB_FILES 
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/lib/libsipsdk.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
