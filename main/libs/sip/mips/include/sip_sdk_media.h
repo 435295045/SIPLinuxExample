@@ -49,6 +49,7 @@ extern "C"
         int width;                    // 宽
         int height;                   // 高
         int fps;                      // 帧率
+        int audio_clock_rate;         // 音频时钟速率
         sip_video_op video_op;        // 视频操作
         sip_audio_op audio_op;        // 音频操作
         sdk_bool_t not_enable_encode; // 不启用编码（关闭可以省下一些内存）

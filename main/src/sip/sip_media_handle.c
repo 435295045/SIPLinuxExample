@@ -128,6 +128,9 @@ void media_init()
     sip_media_config.height = 480;
     sip_media_config.fps = 15;
 
+    /* 音频时钟速率 */
+    sip_media_config.audio_clock_rate = 16000;
+
     sip_media_config.video_op.codec_init = codec_init;
     sip_media_config.video_op.codec_deinit = codec_deinit;
     sip_media_config.audio_op.get_audio_frame_from_stream = audio_frame_from_stream;

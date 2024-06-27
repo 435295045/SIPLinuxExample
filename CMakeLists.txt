@@ -72,7 +72,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "mips")
 endif ()
 
 file(GLOB_RECURSE SOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/main/src/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/main/src/*.cpp
 )
 
 add_executable(sip_example

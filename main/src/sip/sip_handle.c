@@ -186,7 +186,7 @@ void registrar()
         .username = "test_username",
         .proxy = NULL,
         .proxy_port = 0,
-        .enable_rate_control = SDK_FALSE,
+        .enable_stream_control = SDK_FALSE,
         .start_keyframe_count = 120,
         .start_keyframe_interval = 1000,
     };

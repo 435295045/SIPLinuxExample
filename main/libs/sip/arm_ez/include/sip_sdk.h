@@ -79,7 +79,7 @@ extern "C"
         char *username;                   // 用户名
         char *proxy;                      // 代理地址
         unsigned proxy_port;              // 代理端口
-        sdk_bool_t enable_rate_control;   // 速率控制
+        sdk_bool_t enable_stream_control; // 流发送控制
         unsigned start_keyframe_count;    // 开始关键帧数量
         unsigned start_keyframe_interval; // 开始关键帧时间间隔
     } sip_sdk_local_config;
@@ -95,7 +95,7 @@ extern "C"
         sip_header headers[SDK_MAX_CUSTOM_HEADERS]; // sip header
         char *proxy;                                // 代理地址
         unsigned proxy_port;                        // 代理端口
-        sdk_bool_t enable_rate_control;             // 速率控制
+        sdk_bool_t enable_stream_control;           // 流发送控制
         unsigned start_keyframe_count;              // 开始关键帧数量
         unsigned start_keyframe_interval;           // 开始关键帧时间间隔
     } sip_sdk_registrar_config;
