@@ -187,7 +187,7 @@ void registrar()
         .proxy = NULL,
         .proxy_port = 0,
         .enable_stream_control = SDK_FALSE,
-        .start_keyframe_count = 120,
+        .start_keyframe_count = 10,
         .start_keyframe_interval = 1000,
     };
     local_account(local_config);

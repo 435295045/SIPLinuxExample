@@ -24,15 +24,14 @@ extern "C"
 
     typedef struct sip_video_op
     {
-        sdk_status_t (*codec_init)(void **user_data);  // 初始化编解码器
-        sdk_status_t (*codec_deinit)(void *user_data); // 销毁编解码器
+        sdk_status_t (*codec_init)(sdk_uuid_t call_uuid, void **user_data); // 初始化编解码器
+        sdk_status_t (*codec_deinit)(void *user_data);                      // 销毁编解码器
         sdk_status_t (*codec_encode)(void *user_data,
                                      void *buf,
                                      unsigned *buf_size,
                                      sdk_bool_t *is_keyframe,
                                      sdk_bool_t required_keyframe); // 回调编码帧
-        sdk_status_t (*codec_decode)(sdk_uuid_t call_uuid,
-                                     void *user_data,
+        sdk_status_t (*codec_decode)(void *user_data,
                                      unsigned char *data,
                                      unsigned data_size); // 回调h.264数据
     } sip_video_op;

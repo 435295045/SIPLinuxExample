@@ -3,8 +3,9 @@
 /**
  * 编解码器初始化
  */
-static sdk_status_t codec_init(void **user_data)
+static sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
 {
+    printf("---------------------------------------------: %ld\n", call_uuid);
     /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
     // SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
     // // user_data 你的私有数据
@@ -60,9 +61,8 @@ static sdk_status_t codec_encode(void *user_data,
  * data: H.264 数据
  * data_size: H.264 数据大小
  */
-sdk_status_t codec_decode(sdk_uuid_t call_uuid, void *user_data, unsigned char *data, unsigned data_size)
+sdk_status_t codec_decode(void *user_data, unsigned char *data, unsigned data_size)
 {
-    printf("---------------------------------------------: %ld\n", call_uuid);
     return 0; // 假设成功返回0，而不是-1
 }
 

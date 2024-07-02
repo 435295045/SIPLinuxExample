@@ -7,10 +7,11 @@ namespace sipmedia
     /**
      * 编解码器初始化
      */
-    sdk_status_t codec_init(void **user_data)
+    sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
     {
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/360p.h264");
+        simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
         return SDK_SUCCESS;
@@ -65,23 +66,23 @@ namespace sipmedia
      * data_size: H.264 数据大小
      */
     std::map<sdk_uuid_t, std::ofstream> h264_files;
-    sdk_status_t codec_decode(sdk_uuid_t call_uuid,
-                              void *user_data,
+    sdk_status_t codec_decode(void *user_data,
                               unsigned char *data,
                               unsigned data_size)
     {
         mutex_file_write.lock();
-        auto it = h264_files.find(call_uuid);
+        SimulateCode *simulateCode = (SimulateCode *)user_data;
+        auto it = h264_files.find(simulateCode->call_uuid);
         if (it == h264_files.end())
         {
             // 如果没找到，创建一个新的文件流
-            std::string file_name = "/data/h264/" + std::to_string(call_uuid) + ".h264";
-            h264_files[call_uuid].open(file_name, std::ios::binary);
-            if (!h264_files[call_uuid].is_open())
+            std::string file_name = "/data/h264/" + std::to_string(simulateCode->call_uuid) + ".h264";
+            h264_files[simulateCode->call_uuid].open(file_name, std::ios::binary);
+            if (!h264_files[simulateCode->call_uuid].is_open())
             {
                 return -1;
             }
-            it = h264_files.find(call_uuid);
+            it = h264_files.find(simulateCode->call_uuid);
         }
         std::ofstream &h264_file = it->second;
         if (h264_file.is_open())
@@ -152,7 +153,7 @@ namespace sipmedia
         sip_media_config.clock_rate = 90000;
         sip_media_config.width = 640;
         sip_media_config.height = 480;
-        sip_media_config.fps = 15;
+        sip_media_config.fps = 25;
 
         /* 音频时钟速率 */
         sip_media_config.audio_clock_rate = 16000;
