@@ -10,7 +10,7 @@ namespace sipmedia
     sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
     {
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/360p.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/outvid_1080p_ml.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
@@ -26,7 +26,7 @@ namespace sipmedia
      * is_keyframe: H.264 数据是否是关键帧，是：SDK_TRUE 不是: SDK_FLASE
      * required_keyframe: 需要强制返回关键帧
      */
-    uint8_t *buffer = (uint8_t *)malloc(640 * 480);
+    uint8_t *buffer = (uint8_t *)malloc(1920 * 1080);
     size_t buffer_size = 0;
     int frame_type = 0;
     sdk_status_t codec_encode(void *user_data,
@@ -39,7 +39,7 @@ namespace sipmedia
         {
             // 这里最好强制编码关键帧，这个时候对方客户端是需要关键帧的
         }
-        memset(buffer, 0, 640 * 480);
+        memset(buffer, 0, 1920 * 1080);
         SimulateCode *simulateCode = (SimulateCode *)user_data;
         // 从文件中读取帧
         int ret = simulateCode->h264_readnalu(buffer, &buffer_size, &frame_type);
@@ -151,8 +151,8 @@ namespace sipmedia
 
         /* 正常使用编码，按照实际需求填写 */
         sip_media_config.clock_rate = 90000;
-        sip_media_config.width = 640;
-        sip_media_config.height = 480;
+        sip_media_config.width = 1920;
+        sip_media_config.height = 1080;
         sip_media_config.fps = 25;
 
         /* 音频时钟速率 */

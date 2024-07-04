@@ -80,6 +80,7 @@ extern "C"
         char *proxy;                      // 代理地址
         unsigned proxy_port;              // 代理端口
         sdk_bool_t enable_stream_control; // 流发送控制
+        int stream_elapsed;               // 流经过时间
         unsigned start_keyframe_count;    // 开始关键帧数量
         unsigned start_keyframe_interval; // 开始关键帧时间间隔
     } sip_sdk_local_config;
@@ -96,6 +97,7 @@ extern "C"
         char *proxy;                                // 代理地址
         unsigned proxy_port;                        // 代理端口
         sdk_bool_t enable_stream_control;           // 流发送控制
+        int stream_elapsed;                         // 流经过时间
         unsigned start_keyframe_count;              // 开始关键帧数量
         unsigned start_keyframe_interval;           // 开始关键帧时间间隔
     } sip_sdk_registrar_config;

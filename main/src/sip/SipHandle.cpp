@@ -168,6 +168,7 @@ namespace sip
             .proxy = NULL,
             .proxy_port = 0,
             .enable_stream_control = SDK_FALSE,
+            .stream_elapsed = 3,
             .start_keyframe_count = 10,
             .start_keyframe_interval = 1000,
         };
