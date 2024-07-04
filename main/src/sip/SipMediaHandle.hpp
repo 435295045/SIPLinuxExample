@@ -11,7 +11,7 @@
 // 是否开启编码（如果只需要解码，关闭可以省内存）
 #define INIT_ENABLE_ENCODE 1
 // 是否开启解码（如果只需要编码，关闭可以省内存）
-#define INIT_ENABLE_DECODE 1
+#define INIT_ENABLE_DECODE 0
 
 namespace sipmedia
 {

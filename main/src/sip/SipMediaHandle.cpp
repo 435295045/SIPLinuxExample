@@ -10,7 +10,7 @@ namespace sipmedia
     sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
     {
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/1080p.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
