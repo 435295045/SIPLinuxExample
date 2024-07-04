@@ -61,7 +61,7 @@ static sdk_status_t codec_encode(void *user_data,
  * data: H.264 数据
  * data_size: H.264 数据大小
  */
-sdk_status_t codec_decode(void *user_data, unsigned char *data, unsigned data_size)
+sdk_status_t codec_decode(void *user_data, sdk_timestamp_t timestamp, unsigned char *data, unsigned data_size)
 {
     return 0; // 假设成功返回0，而不是-1
 }

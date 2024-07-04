@@ -168,7 +168,7 @@ namespace sip
             .proxy = NULL,
             .proxy_port = 0,
             .enable_stream_control = SDK_FALSE,
-            .stream_elapsed = 3,
+            .stream_elapsed = 5,
             .start_keyframe_count = 10,
             .start_keyframe_interval = 1000,
         };
@@ -185,8 +185,9 @@ namespace sip
         //     .headers = {sh},
         //     .proxy = "test.jhws.top",
         //     .proxy_port = 58583,
-        //     .enable_stream_control = SDK_TRUE,
-        //     .start_keyframe_count = 120,
+        //     .enable_stream_control = SDK_FALSE,
+        //     .stream_elapsed = 5,
+        //     .start_keyframe_count = 10,
         //     .start_keyframe_interval = 1000,
         // };
         // registrar_account(registrar_config);

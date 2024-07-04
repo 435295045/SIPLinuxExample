@@ -17,6 +17,7 @@ extern "C"
     typedef int sdk_input_video_t;
     typedef long unsigned int sdk_size_t;
     typedef long unsigned int sdk_uuid_t;
+    typedef unsigned long long sdk_timestamp_t;
 
     enum sdk_constants_
     {

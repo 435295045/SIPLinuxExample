@@ -32,6 +32,7 @@ extern "C"
                                      sdk_bool_t *is_keyframe,
                                      sdk_bool_t required_keyframe); // 回调编码帧
         sdk_status_t (*codec_decode)(void *user_data,
+                                     sdk_timestamp_t timestamp,
                                      unsigned char *data,
                                      unsigned data_size); // 回调h.264数据
     } sip_video_op;

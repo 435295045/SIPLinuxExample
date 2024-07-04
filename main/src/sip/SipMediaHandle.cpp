@@ -10,7 +10,7 @@ namespace sipmedia
     sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
     {
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/outvid_1080p_ml.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
@@ -67,9 +67,11 @@ namespace sipmedia
      */
     std::map<sdk_uuid_t, std::ofstream> h264_files;
     sdk_status_t codec_decode(void *user_data,
+                              sdk_timestamp_t timestamp,
                               unsigned char *data,
                               unsigned data_size)
     {
+        printf("---------------------------------------------timestamp: %llu\n", timestamp);
         mutex_file_write.lock();
         SimulateCode *simulateCode = (SimulateCode *)user_data;
         auto it = h264_files.find(simulateCode->call_uuid);
