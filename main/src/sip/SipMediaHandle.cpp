@@ -7,10 +7,17 @@ namespace sipmedia
     /**
      * 编解码器初始化
      */
-    sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
+    sdk_status_t codec_init(sdk_uuid_t call_uuid,
+                            video_media_config *vid_media_config,
+                            void **user_data)
     {
+        vid_media_config->fps = 25;
+        vid_media_config->width = 1920;
+        vid_media_config->height = 1080;
+        vid_media_config->min_block_datas = 30;
+
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/1080p.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/indoorvid_1080p2.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
@@ -145,18 +152,6 @@ namespace sipmedia
 
     void init()
     {
-        /* 如果不启用编码，请使用以下配置（不启用编码可以省更多cpu与内存） */
-        // sip_media_config.clock_rate = 90000;
-        // sip_media_config.width = 10;
-        // sip_media_config.height = 10;
-        // sip_media_config.fps = 5;
-
-        /* 正常使用编码，按照实际需求填写 */
-        sip_media_config.clock_rate = 90000;
-        sip_media_config.width = 1920;
-        sip_media_config.height = 1080;
-        sip_media_config.fps = 25;
-
         /* 音频时钟速率 */
         sip_media_config.audio_clock_rate = 16000;
 

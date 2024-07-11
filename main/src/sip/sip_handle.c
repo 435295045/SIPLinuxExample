@@ -242,6 +242,8 @@ void call(const char *username)
             },
         },
     };
+    sscp.transmit_sound = SDK_TRUE;
+    sscp.transmit_video = SDK_TRUE;
     make_call(&sscp);
     // 这里拿到呼叫uuid
 }
@@ -283,6 +285,8 @@ void answer(unsigned code)
     sip_sdk_answer_param answer_param = {
         code, // 接听状态码
         0,    // 呼叫uuid，为0表示接听所有被叫
+        SDK_TRUE,
+        SDK_TRUE,
     };
     answer_call(answer_param);
 }

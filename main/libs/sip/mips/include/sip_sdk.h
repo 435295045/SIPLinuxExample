@@ -110,12 +110,16 @@ extern "C"
         char *remote_ip;                            // 远程IP
         sip_header headers[SDK_MAX_CUSTOM_HEADERS]; // sip header
         sdk_uuid_t call_uuid;                       // 呼叫ID
+        sdk_bool_t transmit_video;                  // 是否传输视频
+        sdk_bool_t transmit_sound;                  // 是否传输声音
     } sip_sdk_call_param;
 
     typedef struct sip_sdk_answer_param
     {
-        unsigned code;        // 接听状态码
-        sdk_uuid_t call_uuid; // 呼叫ID
+        unsigned code;             // 接听状态码
+        sdk_uuid_t call_uuid;      // 呼叫ID
+        sdk_bool_t transmit_video; // 是否传输视频
+        sdk_bool_t transmit_sound; // 是否传输声音
     } sip_sdk_answer_param;
 
     typedef struct sip_sdk_hangup_param

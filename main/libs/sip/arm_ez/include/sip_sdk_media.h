@@ -8,13 +8,13 @@ extern "C"
 {
 #endif
 
-    typedef struct video_media_frame
+    typedef struct video_media_config
     {
-        void *buf;       // 媒体数据
-        sdk_size_t size; // buf size
-        unsigned w;      // 宽
-        unsigned h;      // 高
-    } video_media_frame;
+        int fps;             // 帧率
+        int width;           // 宽
+        int height;          // 高
+        int min_block_datas; // 数分块最小数量
+    } video_media_config;
 
     typedef struct audio_media_frame
     {
@@ -24,8 +24,10 @@ extern "C"
 
     typedef struct sip_video_op
     {
-        sdk_status_t (*codec_init)(sdk_uuid_t call_uuid, void **user_data); // 初始化编解码器
-        sdk_status_t (*codec_deinit)(void *user_data);                      // 销毁编解码器
+        sdk_status_t (*codec_init)(sdk_uuid_t call_uuid,
+                                   video_media_config *vid_media_config,
+                                   void **user_data);  // 初始化编解码器
+        sdk_status_t (*codec_deinit)(void *user_data); // 销毁编解码器
         sdk_status_t (*codec_encode)(void *user_data,
                                      void *buf,
                                      unsigned *buf_size,
@@ -45,10 +47,6 @@ extern "C"
 
     typedef struct sip_sdk_media_config
     {
-        int clock_rate;               // 时钟速率
-        int width;                    // 宽
-        int height;                   // 高
-        int fps;                      // 帧率
         int audio_clock_rate;         // 音频时钟速率
         sip_video_op video_op;        // 视频操作
         sip_audio_op audio_op;        // 音频操作

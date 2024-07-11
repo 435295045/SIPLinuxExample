@@ -169,15 +169,15 @@ namespace sip
             .proxy_port = 0,
             .enable_stream_control = SDK_FALSE,
             .stream_elapsed = 2,
-            .start_keyframe_count = 10,
+            .start_keyframe_count = 120,
             .start_keyframe_interval = 1000,
         };
         local_account(local_config);
         // 注册到服务器
-        // sip_header sh = {"jwt", "需要服务器获取"};
+        // sip_header sh = {"jwt", "12345"};
         // sip_sdk_registrar_config registrar_config = {
         //     .domain = "jhws.top",
-        //     .username = (char *)username.c_str(),
+        //     .username = "OD-1-1-1-1-0-3",
         //     .password = "123456",
         //     .transport = "tcp",
         //     .server_addr = "test.jhws.top",
@@ -225,6 +225,8 @@ namespace sip
             sscp.headers[i].value = const_cast<char *>(header.second.c_str());
             i++;
         }
+        sscp.transmit_sound = SDK_TRUE;
+        sscp.transmit_video = SDK_TRUE;
         make_call(&sscp);
         // 这里拿到呼叫uuid
     }
@@ -267,6 +269,8 @@ namespace sip
         sip_sdk_answer_param answer_param = {
             code, // 接听状态码
             0,    // 呼叫uuid，为0表示接听所有被叫
+            SDK_TRUE,
+            SDK_TRUE,
         };
         answer_call(answer_param);
     }
