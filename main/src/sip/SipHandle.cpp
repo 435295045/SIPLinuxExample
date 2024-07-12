@@ -255,6 +255,8 @@ namespace sip
             sscp.headers[i].value = const_cast<char *>(header.second.c_str());
             i++;
         }
+        sscp.transmit_sound = SDK_TRUE;
+        sscp.transmit_video = SDK_TRUE;
         make_call(&sscp);
         // 这里拿到呼叫uuid
     }

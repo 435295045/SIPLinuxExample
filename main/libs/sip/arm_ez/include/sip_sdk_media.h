@@ -29,6 +29,7 @@ extern "C"
                                    void **user_data);  // 初始化编解码器
         sdk_status_t (*codec_deinit)(void *user_data); // 销毁编解码器
         sdk_status_t (*codec_encode)(void *user_data,
+                                     sdk_timestamp_t timestamp,
                                      void *buf,
                                      unsigned *buf_size,
                                      sdk_bool_t *is_keyframe,

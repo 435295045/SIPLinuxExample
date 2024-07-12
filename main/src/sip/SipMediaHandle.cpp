@@ -11,13 +11,13 @@ namespace sipmedia
                             video_media_config *vid_media_config,
                             void **user_data)
     {
-        vid_media_config->fps = 25;
+        vid_media_config->fps = 15;
         vid_media_config->width = 1920;
         vid_media_config->height = 1080;
         vid_media_config->min_block_datas = 30;
 
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/indoorvid_1080p2.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/indoorvid_360p2.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
@@ -37,6 +37,7 @@ namespace sipmedia
     size_t buffer_size = 0;
     int frame_type = 0;
     sdk_status_t codec_encode(void *user_data,
+                              sdk_timestamp_t timestamp,
                               void *buf,
                               unsigned *buf_size,
                               sdk_bool_t *is_keyframe,
