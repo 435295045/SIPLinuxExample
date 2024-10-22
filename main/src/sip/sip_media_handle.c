@@ -3,13 +3,20 @@
 /**
  * 编解码器初始化
  */
-static sdk_status_t codec_init(sdk_uuid_t call_uuid, void **user_data)
+sdk_status_t codec_init(sdk_uuid_t call_uuid,
+                        video_media_config *vid_media_config,
+                        void **user_data)
 {
-    printf("---------------------------------------------: %ld\n", call_uuid);
     /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
     // SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
     // // user_data 你的私有数据
     // *user_data = simulateCode;
+
+    vid_media_config->fps = 15;
+    vid_media_config->width = 640;
+    vid_media_config->height = 480;
+    vid_media_config->min_block_datas = 30;
+
     return SDK_SUCCESS;
 }
 
@@ -116,20 +123,20 @@ static sdk_status_t on_call_audio_media_stream(audio_media_frame media_frame)
 
 void media_init()
 {
-    /* 如果不启用编码，请使用以下配置（不启用编码可以省更多cpu与内存） */
-    // sip_media_config.clock_rate = 90000;
-    // sip_media_config.width = 10;
-    // sip_media_config.height = 10;
-    // sip_media_config.fps = 5;
-
-    /* 正常使用编码，按照实际需求填写 */
-    sip_media_config.clock_rate = 90000;
-    sip_media_config.width = 640;
-    sip_media_config.height = 480;
-    sip_media_config.fps = 15;
-
     /* 音频时钟速率 */
     sip_media_config.audio_clock_rate = 16000;
+    // 音频时钟速率
+    sip_media_config.audio_clock_rate = 16000;
+    // mic 增益
+    sip_media_config.mic_gain = 1;
+    // speaker 增益
+    sip_media_config.speaker_gain = 1;
+    // 噪音抑制
+    sip_media_config.ns_enable = SDK_TRUE;
+    // 回音消除
+    sip_media_config.aec_enable = SDK_TRUE;
+    // 自动增益
+    sip_media_config.agc_enable = SDK_TRUE;
 
     sip_media_config.video_op.codec_init = codec_init;
     sip_media_config.video_op.codec_deinit = codec_deinit;

@@ -1,5 +1,9 @@
 #include "sip_handle.h"
 
+#define SDK_LICENSE_CLIENT_ID "1298331664417689600"
+#define SDK_LICENSE_CLIENT_SECRET "26e0e4a3bfda52d95b283d5a6403c493"
+#define SDK_LICENSE_AUTH_FILE "/data/device.json"
+
 // 初始化结束回调
 static void on_init_completed(sdk_status_t state, const char *msg);
 
@@ -142,6 +146,22 @@ static sip_sdk_observer sdk_observer = {
  */
 void init()
 {
+    // 设备唯一ID
+    char *dev_uuid = "test";
+    // 注册 SDK
+    sdk_status_t status = sip_sdk_register(SDK_LICENSE_CLIENT_ID,
+                                           SDK_LICENSE_CLIENT_SECRET,
+                                           dev_uuid,
+                                           SDK_LICENSE_AUTH_FILE,
+                                           JUN_ZHENG_AD_MIPS,
+                                           SDK_LICENSE_TYPE_TEST);
+
+    if (status != 0)
+    {
+        printf("sip sdk register error\n");
+        return;
+    }
+
     sip_sdk_config.sdk_run = SDK_TRUE;
     sip_sdk_config.port = 58581;
     sip_sdk_config.log_level = 4;
@@ -150,8 +170,6 @@ void init()
     sip_sdk_config.allow_multiple_connections = SDK_TRUE;
     static char *user_agent = "JHCloud-linux-1.0";
     sip_sdk_config.user_agent = user_agent;
-    static char *data_dir = "/data";
-    sip_sdk_config.data_dir = data_dir;
     sip_sdk_config.sdk_observer = &sdk_observer;
     sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
     // 初始化媒体
@@ -183,7 +201,7 @@ void registrar()
 {
     // 初始化本地账号（这里初始化username，会将本地sip消息体中from由原有的sip:+ip改为sip:+username)
     sip_sdk_local_config local_config = {
-        .username = "test_username",
+        .username = "OD-1-1-1-1-0-8",
         .proxy = NULL,
         .proxy_port = 0,
         .enable_stream_control = SDK_FALSE,

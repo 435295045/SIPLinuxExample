@@ -11,13 +11,13 @@ namespace sipmedia
                             video_media_config *vid_media_config,
                             void **user_data)
     {
-        vid_media_config->fps = 15;
-        vid_media_config->width = 1920;
-        vid_media_config->height = 1080;
+        vid_media_config->fps = 25;
+        vid_media_config->width = 640;
+        vid_media_config->height = 480;
         vid_media_config->min_block_datas = 30;
 
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
-        SimulateCode *simulateCode = new SimulateCode("/data/indoorvid_360p2.h264");
+        SimulateCode *simulateCode = new SimulateCode("/data/test.h264");
         simulateCode->call_uuid = call_uuid;
         // user_data 你的私有数据
         *user_data = simulateCode;
@@ -153,8 +153,18 @@ namespace sipmedia
 
     void init()
     {
-        /* 音频时钟速率 */
+        // 音频时钟速率
         sip_media_config.audio_clock_rate = 16000;
+        // mic 增益
+        sip_media_config.mic_gain = 1;
+        // speaker 增益
+        sip_media_config.speaker_gain = 1;
+        // 噪音抑制
+        sip_media_config.ns_enable = SDK_TRUE;
+        // 回音消除
+        sip_media_config.aec_enable = SDK_TRUE;
+        // 自动增益
+        sip_media_config.agc_enable = SDK_TRUE;
 
         sip_media_config.video_op.codec_init = codec_init;
         sip_media_config.video_op.codec_deinit = codec_deinit;

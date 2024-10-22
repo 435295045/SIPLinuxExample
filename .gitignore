@@ -9,3 +9,5 @@ ui/
 
 # VSCode
 .vscode/
+
+third_party/

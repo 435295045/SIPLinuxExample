@@ -46,13 +46,24 @@ extern "C"
         audio_media_frame *(*get_audio_frame_from_stream)();                       // 获取音频数据
     } sip_audio_op;
 
+    typedef struct sip_sdk_media_h264_fmtp
+    {
+        char profile_level_id[20];
+        char packetization_mode[10];
+    } sip_sdk_media_h264_fmtp;
     typedef struct sip_sdk_media_config
     {
-        int audio_clock_rate;         // 音频时钟速率
-        sip_video_op video_op;        // 视频操作
-        sip_audio_op audio_op;        // 音频操作
-        sdk_bool_t not_enable_encode; // 不启用编码（关闭可以省下一些内存）
-        sdk_bool_t not_enable_decode; // 不启用解码（关闭可以省下一些内存）
+        int audio_clock_rate;              // 音频时钟速率（默认 16000)
+        float mic_gain;                    // mic增益（默认 1)
+        float speaker_gain;                // speaker增益（默认 1)
+        sdk_bool_t ns_enable;              // 是否启用噪声抑制（默认 SDK_TRUE）
+        sdk_bool_t agc_enable;             // 是否启用自动增益（默认 SDK_TRUE）
+        sdk_bool_t aec_enable;             // 是否启用回音消除（默认 SDK_TRUE）
+        sip_video_op video_op;             // 视频操作
+        sip_audio_op audio_op;             // 音频操作
+        sdk_bool_t not_enable_encode;      // 不启用编码（关闭可以省下一些内存）（默认 SDK_FALSE)
+        sdk_bool_t not_enable_decode;      // 不启用解码（关闭可以省下一些内存）（默认 SDK_FALSE)
+        sip_sdk_media_h264_fmtp h264_fmtp; // H264 fmtp
     } sip_sdk_media_config;
 
     extern sip_sdk_media_config sip_media_config;

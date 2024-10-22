@@ -69,6 +69,24 @@ extern "C"
         SDK_MEDIA_NOTIFICATION_SEND_KEYFRAME = 10000,
     };
 
+    typedef enum
+    {
+        /** 君正 AD 系列 MIPS 架构 */
+        JUN_ZHENG_AD_MIPS = 0
+    } device_type;
+
+    typedef enum
+    {
+        /** license 测试使用 */
+        SDK_LICENSE_TYPE_TEST = 0,
+        /** license 时间授权 */
+        SDK_LICENSE_TYPE_AUTHORIZATION_TIME = SDK_LICENSE_TYPE_TEST + 1,
+        /** license 永久授权 */
+        SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS = SDK_LICENSE_TYPE_AUTHORIZATION_TIME + 1,
+        /** license 内部使用 */
+        SDK_LICENSE_TYPE_AUTHORIZATION_INTERNAL = SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS + 1,
+    } license_type;
+
     typedef struct sip_header
     {
         char *key;
@@ -166,10 +184,16 @@ extern "C"
         sdk_bool_t allow_multiple_connections;   // 允许多个连接
         sdk_bool_t domain_name_direct_registrar; // 域名注册
         sdk_bool_t does_it_support_broadcast;    // 是否支持广播
-        char *data_dir;                          // 操作目录
     } sip_sdk_common_config;
 
     extern sip_sdk_common_config sip_sdk_config;
+
+    sdk_status_t sip_sdk_register(const char *client_id,
+                                  const char *client_secret,
+                                  const char *device_uuid,
+                                  const char *auth_file_path,
+                                  const device_type dev_type,
+                                  const license_type lic_type);
 
     sdk_status_t sip_sdk_init();
 
