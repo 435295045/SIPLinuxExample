@@ -1,4 +1,4 @@
-prefix=/home/ubuntu/project/lvgl/sip_sdk_example/main/libs/openssl/arm_ze
+prefix=/home/ubuntu/project/lvgl/sip_sdk_example/main/libs/openssl/arm_ez
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
