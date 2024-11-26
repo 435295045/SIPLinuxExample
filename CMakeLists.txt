@@ -26,13 +26,16 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm")
         include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/src
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm/include
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/include
         )
 
         set(LIB_FILES 
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl/arm/lib/libcurl.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm/lib/libsipsdk.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/lib/libcrypto.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/lib/libssl.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm/lib/libcurl_license.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
@@ -47,13 +50,16 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
         include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/src
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/include
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/include
         )
 
         set(LIB_FILES 
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl/arm_ez/lib/libcurl.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/lib/libsipsdk.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libcrypto.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libssl.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/lib/libcurl_license.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")

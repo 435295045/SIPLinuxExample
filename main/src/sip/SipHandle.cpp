@@ -1,7 +1,9 @@
 #include "SipHandle.hpp"
+#include "curl_license.h"
 
-#define SDK_LICENSE_CLIENT_ID "1298331664417689600"
-#define SDK_LICENSE_CLIENT_SECRET "26e0e4a3bfda52d95b283d5a6403c493"
+#define SDK_LICENSE_CLIENT_ID "1310948135773802496"
+#define SDK_LICENSE_CLIENT_SECRET "cb63f8338c3d24f51f9e984958760309"
+#define SDK_LICENSE_SERVER_URL "https://120.79.7.237/"
 #define SDK_LICENSE_AUTH_FILE "/data/device.json"
 
 namespace sip
@@ -135,13 +137,37 @@ namespace sip
                                                SDK_LICENSE_CLIENT_SECRET,
                                                dev_uuid.c_str(),
                                                SDK_LICENSE_AUTH_FILE,
-                                               JUN_ZHENG_AD_MIPS,
-                                               SDK_LICENSE_TYPE_TEST);
-
+                                               YI_ZHI_ARM,
+                                               SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS);
         if (status != 0)
         {
-            printf("sip sdk register error\n");
-            return;
+            // 检查文件是否存在
+            std::ifstream infile(SDK_LICENSE_AUTH_FILE);
+            if (infile.good())
+            {
+                return; // 文件已存在，直接返回
+            }
+            infile.close();
+
+            // 获取license
+            char info[1024] = {0};
+            bool ret = sync_token(SDK_LICENSE_SERVER_URL, SDK_LICENSE_CLIENT_ID, SDK_LICENSE_CLIENT_SECRET, info);
+            if (!ret)
+            {
+                printf("sip sdk license error\n");
+                return;
+            }
+
+            // 文件不存在，写入license
+            std::ofstream outfile(SDK_LICENSE_AUTH_FILE);
+            if (!outfile)
+            {
+                printf("Failed to create file: %s\n", SDK_LICENSE_AUTH_FILE);
+                return;
+            }
+            outfile << info;
+            outfile.close();
+            system("sync");
         }
 
         sip_sdk_config.sdk_run = SDK_TRUE;
