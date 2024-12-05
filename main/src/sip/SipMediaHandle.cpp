@@ -14,7 +14,7 @@ namespace sipmedia
         vid_media_config->fps = 25;
         vid_media_config->width = 640;
         vid_media_config->height = 480;
-        vid_media_config->min_block_datas = 30;
+        vid_media_config->min_block_datas = 60;
 
         /* 这里初始化编解码器 这里是文件中读取模拟编码器*/
         SimulateCode *simulateCode = new SimulateCode("/data/test.h264");

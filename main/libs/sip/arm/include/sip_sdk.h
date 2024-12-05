@@ -148,12 +148,6 @@ extern "C"
         sdk_uuid_t call_uuid; // 呼叫ID
     } sip_sdk_hangup_param;
 
-    typedef struct sip_sdk_media_connect_param
-    {
-        int source;      // 源
-        int destination; // 目标
-    } sip_sdk_media_connect_param;
-
     typedef struct sip_sdk_message_param
     {
         sdk_message_t message_type; // 消息类型
@@ -226,12 +220,6 @@ extern "C"
     sdk_status_t send_message(const sip_sdk_message_param message_param);
 
     sdk_status_t send_dtmf_info(const sip_sdk_dtmf_info_param dtmf_info_param);
-
-    int media_connect_id(sdk_uuid_t call_uuid);
-
-    sdk_status_t media_connect(const sip_sdk_media_connect_param param);
-
-    sdk_status_t media_disconnect(const sip_sdk_media_connect_param param);
 
     sdk_status_t dump_info();
 

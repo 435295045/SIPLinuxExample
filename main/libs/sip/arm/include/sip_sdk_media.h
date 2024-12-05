@@ -66,11 +66,44 @@ extern "C"
         sip_sdk_media_h264_fmtp h264_fmtp; // H264 fmtp
     } sip_sdk_media_config;
 
+    typedef struct sip_sdk_media_connect_param
+    {
+        int source;      // 源
+        int destination; // 目标
+    } sip_sdk_media_connect_param;
+
+    typedef sdk_status_t (*on_audio_port_stream)(void *user_data, audio_media_frame media_frame);
+    typedef audio_media_frame *(*get_audio_port_stream)(void *user_data);
+    typedef sdk_status_t (*on_audio_destroy)(void *user_data);
+    typedef struct sip_sdk_media_audio_port_param
+    {
+        int media_id;
+        char *name;
+        void *user_data;
+        unsigned clock_rate;
+        unsigned channel_count;
+        unsigned bits_per_sample;
+        unsigned samples_per_frame;
+        on_audio_port_stream on_port_stream;   // 回调音频数据
+        get_audio_port_stream get_port_stream; // 获取音频数据
+        on_audio_destroy on_destroy;           // 销毁回调
+    } sip_sdk_media_audio_port_param;
+
     extern sip_sdk_media_config sip_media_config;
 
     audio_media_frame *alloc_audio_media_frame(sdk_size_t size);
 
     sdk_status_t free_audio_media_frame(audio_media_frame *media_frame);
+
+    int media_connect_id(sdk_uuid_t call_uuid);
+
+    sdk_status_t media_connect(const sip_sdk_media_connect_param param);
+
+    sdk_status_t media_disconnect(const sip_sdk_media_connect_param param);
+
+    void *create_custom_audio_port(sip_sdk_media_audio_port_param param);
+
+    void destroy_custom_audio_port(void *port);
 
 #ifdef __cplusplus
 }
