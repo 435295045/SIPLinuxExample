@@ -7,6 +7,7 @@
 #include <string>
 #include "sip_sdk.h"
 #include "SipMediaHandle.hpp"
+#include "utils/PCMUtils.hpp"
 
 namespace sip
 {

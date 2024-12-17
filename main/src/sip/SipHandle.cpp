@@ -1,5 +1,6 @@
 #include "SipHandle.hpp"
 #include "curl_license.h"
+#include <thread>
 
 #define SDK_LICENSE_CLIENT_ID "1310948135773802496"
 #define SDK_LICENSE_CLIENT_SECRET "cb63f8338c3d24f51f9e984958760309"
@@ -83,26 +84,20 @@ namespace sip
         printf("on_message_state content: %s\n", message_param.content);
     }
 
-    static FILE *pcm_file = NULL;
     static sdk_status_t on_port_stream(void *user_data, audio_media_frame media_frame)
     {
-        printf("-------------------------------------------------------------------------on_port_stream: \n");
-        // 确保音频帧非空且是音频数据
+        // 下面是将数据每一路通话声音写入文件
         if (media_frame.size > 0 && media_frame.buf != NULL)
         {
-            // 如果文件未打开，初始化文件
-            if (!pcm_file)
-            {
-                pcm_file = fopen("/data/output.pcm", "wb");
-                if (!pcm_file)
-                {
-                    return SDK_ERROR_COMMON;
-                }
-            }
-            // 写入音频数据到文件
-            fwrite(media_frame.buf, 1, media_frame.size, pcm_file);
-            fflush(pcm_file); // 确保数据实时写入
+            PCMUtils *pcm_utils = (PCMUtils *)user_data;
+            pcm_utils->write_pcm(media_frame.buf, media_frame.size);
         }
+    }
+
+    static sdk_status_t on_destroy(void *user_data)
+    {
+        PCMUtils *pcm_utils = (PCMUtils *)user_data;
+        delete pcm_utils;
     }
 
     /**
@@ -132,39 +127,46 @@ namespace sip
     std::map<sdk_uuid_t, void *> audio_port_s;
     void on_call_state(sdk_uuid_t call_uuid, sdk_status_t state)
     {
-        // if (state == CALL_STATE_CONFIRMED)
-        // {
-        //     int media_id = media_connect_id(call_uuid);
-        //     if (media_id > 0)
-        //     {
-        //         std::string name = "port:" + std::to_string(call_uuid);
-        //         sip_sdk_media_audio_port_param port_param;
-        //         port_param.media_id = media_id;
-        //         port_param.name = (char *)name.c_str();
-        //         port_param.user_data = &call_uuid;
-        //         port_param.clock_rate = 16000;
-        //         port_param.channel_count = 1;
-        //         port_param.bits_per_sample = 16;
-        //         port_param.samples_per_frame = 320;
-        //         port_param.on_port_stream = on_port_stream; // 回调音频数据
-        //         // port_param.get_port_stream;                 // 获取音频数据
-        //         // port_param.on_destroy;                      // 销毁回调
-        //         void *audio_port = create_custom_audio_port(port_param);
-        //         if (audio_port)
-        //         {
-        //             audio_port_s[call_uuid] = audio_port;
-        //         }
-        //     }
-        // }
-        // else if (state == CALL_STATE_DISCONNECTED)
-        // {
-        //     if (audio_port_s.count(call_uuid) > 0)
-        //     {
-        //         // 键存在，可以安全地访问值
-        //         void *audio_port = audio_port_s[call_uuid];
-        //         destroy_custom_audio_port(audio_port);
-        //     }
-        // }
+        // 下面的代码可以单独获取每一路声音
+        //  if (state == CALL_STATE_CONFIRMED)
+        //  {
+        //      int media_id = media_connect_id(call_uuid);
+        //      if (media_id > 0)
+        //      {
+        //          PCMUtils *pcm_utils = new PCMUtils();
+        //          pcm_utils->call_uuid = call_uuid;
+        //          std::string name = "port:" + std::to_string(call_uuid);
+        //          sip_sdk_media_audio_port_param port_param;
+        //          port_param.media_id = media_id;
+        //          port_param.name = (char *)name.c_str();
+        //          port_param.user_data = pcm_utils;
+        //          port_param.clock_rate = 16000;
+        //          port_param.channel_count = 1;
+        //          port_param.bits_per_sample = 16;
+        //          port_param.samples_per_frame = 320;
+        //          port_param.on_port_stream = on_port_stream; // 回调音频数据
+        //          // port_param.get_port_stream;                 // 获取音频数据
+        //          port_param.on_destroy = on_destroy; // 销毁回调
+        //          void *audio_port = create_custom_audio_port(port_param);
+        //          if (audio_port)
+        //          {
+        //              audio_port_s[call_uuid] = audio_port;
+        //          }
+        //          else
+        //          {
+        //              delete pcm_utils;
+        //          }
+        //      }
+        //  }
+        //  else if (state == CALL_STATE_DISCONNECTED)
+        //  {
+        //      if (audio_port_s.count(call_uuid) > 0)
+        //      {
+        //          // 键存在，可以安全地访问值
+        //          void *audio_port = audio_port_s[call_uuid];
+        //          destroy_custom_audio_port(audio_port);
+        //      }
+        //  }
     }
 
     /**
