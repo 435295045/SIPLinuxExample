@@ -135,6 +135,8 @@ void media_init()
     sip_media_config.ns_enable = SDK_TRUE;
     // 回音消除
     sip_media_config.aec_enable = SDK_TRUE;
+    // 回音消除时间
+    sip_media_config.aec_elimination_time = 30;
     // 自动增益
     sip_media_config.agc_enable = SDK_TRUE;
 

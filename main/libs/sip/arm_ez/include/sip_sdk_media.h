@@ -59,6 +59,7 @@ extern "C"
         sdk_bool_t ns_enable;              // 是否启用噪声抑制（默认 SDK_TRUE）
         sdk_bool_t agc_enable;             // 是否启用自动增益（默认 SDK_TRUE）
         sdk_bool_t aec_enable;             // 是否启用回音消除（默认 SDK_TRUE）
+        short int aec_elimination_time;    // 回音消除时间 （默认 30 ms）
         sip_video_op video_op;             // 视频操作
         sip_audio_op audio_op;             // 音频操作
         sdk_bool_t not_enable_encode;      // 不启用编码（关闭可以省下一些内存）（默认 SDK_FALSE)
