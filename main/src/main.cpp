@@ -16,7 +16,7 @@ int main()
             std::map<std::string, std::string> headers;
             // 这里呼叫多个
             // sip::call("RM-1-1-1-1-1-1", headers);
-            sip::callIP("10.200.0.3", headers);
+            // sip::callIP("10.200.0.3", headers);
         }
     }
 
