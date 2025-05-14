@@ -3,6 +3,36 @@
 
 #include "sip_sdk.h"
 
+typedef enum
+{
+    NALU_TYPE_UNKNOWN = 0,
+    NALU_TYPE_SLICE = 1,
+    NALU_TYPE_DPA = 2,
+    NALU_TYPE_DPB = 3,
+    NALU_TYPE_DPC = 4,
+    NALU_TYPE_IDR = 5,
+    NALU_TYPE_SEI = 6,
+    NALU_TYPE_SPS = 7,
+    NALU_TYPE_PPS = 8,
+    NALU_TYPE_AUD = 9,
+    NALU_TYPE_EOSEQ = 10,
+    NALU_TYPE_EOSTREAM = 11,
+    NALU_TYPE_FILL = 12,
+} h264_nalu_type;
+
+typedef enum
+{
+    PORT_SIGNATURE_TYPE_PLAYER = 0,
+    PORT_SIGNATURE_TYPE_STREAM = 1,
+    PORT_SIGNATURE_TYPE_TEE = 2,
+} port_signature_type;
+
+typedef enum
+{
+    PORT_CONNECT_LEFT = 0,
+    PORT_CONNECT_RIGHT = 1,
+} port_connect_direction;
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -34,16 +64,21 @@ extern "C"
                                      unsigned *buf_size,
                                      sdk_bool_t *is_keyframe,
                                      sdk_bool_t required_keyframe); // 回调编码帧
-        sdk_status_t (*codec_decode)(void *user_data,
-                                     sdk_timestamp_t timestamp,
-                                     unsigned char *data,
-                                     unsigned data_size); // 回调h.264数据
+        sdk_status_t (*codec_decode)(void *user_data,               // 自定义数据
+                                     sdk_timestamp_t timestamp,     // 时间戳
+                                     int type,                      // 帧类型
+                                     unsigned char *data,           // 帧数据
+                                     unsigned data_size);           // 回调h.264数据
     } sip_video_op;
 
     typedef struct sip_audio_op
     {
-        sdk_status_t (*on_call_audio_media_stream)(audio_media_frame media_frame); // 回调音频数据
-        audio_media_frame *(*get_audio_frame_from_stream)();                       // 获取音频数据
+        void (*write_audio_media_stream_thread_create)();                        // 写音频线程创建回调
+        sdk_status_t (*write_audio_media_stream)(audio_media_frame media_frame); // 写音频数据回调
+        void (*write_audio_media_stream_thread_destroy)();                       // 写音频线程销毁回调
+        void (*read_audio_media_stream_thread_create)();                         // 读音频线程创建回调
+        audio_media_frame *(*read_audio_frame_from_stream)();                    // 读音频数据回调
+        void (*read_audio_media_stream_thread_destroy)();                        // 读音频线程销毁回调
     } sip_audio_op;
 
     typedef struct sip_sdk_media_h264_fmtp
@@ -64,6 +99,9 @@ extern "C"
         sip_audio_op audio_op;             // 音频操作
         sdk_bool_t not_enable_encode;      // 不启用编码（关闭可以省下一些内存）（默认 SDK_FALSE)
         sdk_bool_t not_enable_decode;      // 不启用解码（关闭可以省下一些内存）（默认 SDK_FALSE)
+        unsigned decode_max_width;         // 解码支持最大宽度（默认 640)
+        unsigned decode_max_height;        // 解码支持最大高度 (默认 480)
+        sdk_bool_t combin_sps_pps_idr;     // 组合sps pps idr (默认 SDK_FALSE)
         sip_sdk_media_h264_fmtp h264_fmtp; // H264 fmtp
     } sip_sdk_media_config;
 
@@ -74,12 +112,14 @@ extern "C"
     } sip_sdk_media_connect_param;
 
     typedef sdk_status_t (*on_audio_port_stream)(void *user_data, audio_media_frame media_frame);
-    typedef audio_media_frame *(*get_audio_port_stream)(void *user_data);
+    typedef sdk_status_t (*get_audio_port_stream)(void *user_data, void *buf, size_t *size);
     typedef sdk_status_t (*on_audio_destroy)(void *user_data);
     typedef struct sip_sdk_media_audio_port_param
     {
         int media_id;
         char *name;
+        port_signature_type signature_type;
+        port_connect_direction connect_direction;
         void *user_data;
         unsigned clock_rate;
         unsigned channel_count;
@@ -102,9 +142,11 @@ extern "C"
 
     sdk_status_t media_disconnect(const sip_sdk_media_connect_param param);
 
-    void *create_custom_audio_port(sip_sdk_media_audio_port_param param);
+    void *create_audio_port(sip_sdk_media_audio_port_param param);
 
-    void destroy_custom_audio_port(void *port);
+    int audio_port_put_frame(void *port, const void *frame_data, unsigned frame_size);
+
+    void destroy_audio_port(void *port);
 
 #ifdef __cplusplus
 }

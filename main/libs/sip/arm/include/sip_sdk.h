@@ -71,8 +71,9 @@ extern "C"
 
     typedef enum
     {
+        X86_64_UBUNTU = 0,
         /** 亿智 arm 系列 */
-        YI_ZHI_ARM = 0,
+        YI_ZHI_ARM = X86_64_UBUNTU + 1,
         /** 君正 MIPS ad 系列 */
         JUN_ZHENG_MIPS_AD = YI_ZHI_ARM + 1,
     } device_type;
@@ -88,6 +89,22 @@ extern "C"
         /** license 内部使用 */
         SDK_LICENSE_TYPE_AUTHORIZATION_INTERNAL = SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS + 1,
     } license_type;
+
+    typedef struct
+    {
+        int count;              // stun 服务器数量
+        char servers[8][64];    // stun 服务器地址
+        sdk_bool_t enable_ipv6; // 是否使用 ipv6
+    } sip_sdk_stun_config;
+
+    typedef struct
+    {
+        sdk_bool_t enable; // 是否开启turn
+        char *server;      // turn 服务器地址 HOST:PORT/DOMAIN:PORT
+        char *realm;       // realm
+        char *username;    // username
+        char *password;    // password
+    } sip_sdk_turn_config;
 
     typedef struct sip_header
     {
@@ -121,6 +138,7 @@ extern "C"
         int stream_elapsed;                         // 流经过时间
         unsigned start_keyframe_count;              // 开始关键帧数量
         unsigned start_keyframe_interval;           // 开始关键帧时间间隔
+        sip_sdk_turn_config turn_config;            // turn 服务器
     } sip_sdk_registrar_config;
 
     typedef struct sip_sdk_call_param
@@ -166,6 +184,7 @@ extern "C"
 
     typedef struct sip_sdk_observer
     {
+        void (*on_log_callback)(int level, const char *data, int len);
         void (*on_init_completed)(sdk_status_t state, const char *msg);
         void (*on_stop_completed)();
         void (*on_registrar_state)(sdk_status_t state);
@@ -179,15 +198,19 @@ extern "C"
     typedef struct sip_sdk_common_config
     {
         unsigned port;                           // 端口
+        char public_addr[64];                    // 公网IP配置（如果SDK运行在公网环境可以配置公网IP便于穿透）
         int log_level;                           // 日志等级
         sdk_bool_t sdk_run;                      // 是否运行SDK
-        char *user_agent;                        // user agent
+        char user_agent[32];                     // user agent
+        int worker_thread_count;                 // 工作线程数量
+        sdk_bool_t null_audio_enable;            // 是否启用空音频
         sdk_bool_t video_enable;                 // 是否启用视频
         sdk_bool_t video_out_auto_transmit;      // 视频输出自动传输
         sip_sdk_observer *sdk_observer;          // 状态回调
         sdk_bool_t allow_multiple_connections;   // 允许多个连接
         sdk_bool_t domain_name_direct_registrar; // 域名注册
         sdk_bool_t does_it_support_broadcast;    // 是否支持广播
+        sip_sdk_stun_config stun_config;         // stun 服务器
     } sip_sdk_common_config;
 
     extern sip_sdk_common_config sip_sdk_config;

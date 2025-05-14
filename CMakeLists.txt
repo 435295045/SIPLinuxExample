@@ -25,17 +25,19 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm")
         
         include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/src
-                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm/include
+                /home/ubuntu/project/sip_linux_sdk/libs/linux/arm/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/include
+                /home/ubuntu/project/lvgl/linux_outdoor/main/libs/alsa/arm/include
         )
 
         set(LIB_FILES 
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl/arm/lib/libcurl.so
-                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm/lib/libsipsdk.so
+                /home/ubuntu/project/sip_linux_sdk/libs/linux/arm/lib/libsipsdk.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/lib/libcrypto.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm/lib/libssl.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm/lib/libcurl_license.so
+                /home/ubuntu/project/lvgl/linux_outdoor/main/libs/alsa/arm/lib/libasound.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")

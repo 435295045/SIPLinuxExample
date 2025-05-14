@@ -1,9 +1,8 @@
 #include "SipHandle.hpp"
 #include "curl_license.h"
-#include <thread>
 
-#define SDK_LICENSE_CLIENT_ID "1310948135773802496"
-#define SDK_LICENSE_CLIENT_SECRET "cb63f8338c3d24f51f9e984958760309"
+#define SDK_LICENSE_CLIENT_ID "1364998327518760960"
+#define SDK_LICENSE_CLIENT_SECRET "fe6a46f2e71857a93963eec77d67b04b"
 #define SDK_LICENSE_SERVER_URL "https://120.79.7.237/"
 #define SDK_LICENSE_AUTH_FILE "/data/device.json"
 
@@ -173,6 +172,7 @@ namespace sip
      * 注册回调函数
      */
     static sip_sdk_observer sdk_observer = {
+        nullptr,
         &on_init_completed,
         &on_stop_completed,
         &on_registrar_state,
@@ -230,12 +230,14 @@ namespace sip
 
         sip_sdk_config.sdk_run = SDK_TRUE;
         sip_sdk_config.port = 58581;
+        memset(sip_sdk_config.public_addr, 0, 64);
         sip_sdk_config.log_level = 4;
         sip_sdk_config.video_enable = SDK_TRUE;
         sip_sdk_config.video_out_auto_transmit = SDK_TRUE;
-        sip_sdk_config.allow_multiple_connections = SDK_TRUE;
-        static char *user_agent = "JHCloud-linux-1.0";
-        sip_sdk_config.user_agent = user_agent;
+        sip_sdk_config.allow_multiple_connections = SDK_FALSE;
+        char *user_agent = "linux-sdk-1.0";
+        memset(sip_sdk_config.user_agent, 0, 32);
+        memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
         sip_sdk_config.sdk_observer = &sdk_observer;
         sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
         // 初始化媒体
@@ -267,7 +269,7 @@ namespace sip
     {
         // 初始化本地账号（这里初始化username，会将本地sip消息体中from由原有的sip:+ip改为sip:+username)
         sip_sdk_local_config local_config = {
-            .username = "OD-1-1-1-1-0-8",
+            .username = "test",
             .proxy = NULL,
             .proxy_port = 0,
             .enable_stream_control = SDK_FALSE,
@@ -277,23 +279,22 @@ namespace sip
         };
         local_account(local_config);
         // 注册到服务器
-        // sip_header sh = {"jwt", "12345"};
-        // sip_sdk_registrar_config registrar_config = {
-        //     .domain = "jhws.top",
-        //     .username = "OD-1-1-1-1-0-3",
-        //     .password = "123456",
-        //     .transport = "tcp",
-        //     .server_addr = "test.jhws.top",
-        //     .server_port = 58583,
-        //     .headers = {sh},
-        //     .proxy = "test.jhws.top",
-        //     .proxy_port = 58583,
-        //     .enable_stream_control = SDK_FALSE,
-        //     .stream_elapsed = 5,
-        //     .start_keyframe_count = 10,
-        //     .start_keyframe_interval = 1000,
-        // };
-        // registrar_account(registrar_config);
+        sip_sdk_registrar_config registrar_config = {
+            .domain = "test.com",
+            .username = "test",
+            .password = "123456",
+            .transport = "tcp",
+            .server_addr = "43.160.204.96",
+            .server_port = 5060,
+            .headers = {},
+            .proxy = "43.160.204.96",
+            .proxy_port = 5060,
+            .enable_stream_control = SDK_FALSE,
+            .stream_elapsed = 5,
+            .start_keyframe_count = 10,
+            .start_keyframe_interval = 1000,
+        };
+        registrar_account(registrar_config);
     }
 
     /**

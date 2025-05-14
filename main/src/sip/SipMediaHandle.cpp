@@ -1,4 +1,5 @@
 #include "SipMediaHandle.hpp"
+#include "utils/AlsaUtils.hpp"
 
 static std::mutex mutex_file_write;
 namespace sipmedia
@@ -76,6 +77,7 @@ namespace sipmedia
     std::map<sdk_uuid_t, std::ofstream> h264_files;
     sdk_status_t codec_decode(void *user_data,
                               sdk_timestamp_t timestamp,
+                              int type,
                               unsigned char *data,
                               unsigned data_size)
     {
@@ -114,50 +116,21 @@ namespace sipmedia
         return SDK_SUCCESS;
     }
 
-    /**
-     * 返回音频数据
-     */
     audio_media_frame *audio_frame_from_stream()
     {
-        // 音频数据大小,需要根据实际大小填写
-        // int size = 0;
-        // 分配一个音频结构体
-        // audio_media_frame *media_frame = alloc_audio_media_frame(size);
-        // if (media_frame == NULL || media_frame->buf == NULL)
-        // {
-        //     goto error;
-        // }
-
-        // 加入数据
-        // memcpy(media_frame->buf, buf, size);
-
-        // 正常返回不需要释放，发生任何错误没有正常返回需要自己释放media_frame
-        // return media_frame;
-        return NULL;
-
-    error:
-        // free_audio_media_frame(media_frame);
-        return NULL;
+        return ualsa::read();
     }
 
-    /**
-     * 接收音频数据并播放
-     */
     sdk_status_t on_call_audio_media_stream(audio_media_frame media_frame)
     {
-        // media_frame.buf 数据
-        // media_frame.size 数据大小
-        // 播放成功返回SDK_SUCCESS，失败返回 SDK_ERROR_COMMON
-        return SDK_ERROR_COMMON;
+        return ualsa::play((uint8_t *)media_frame.buf, media_frame.size);
     }
 
     void init()
     {
-        // 音频时钟速率
+        /* 音频时钟速率 */
         sip_media_config.audio_clock_rate = 16000;
-        // mic 增益
         sip_media_config.mic_gain = 1;
-        // speaker 增益
         sip_media_config.speaker_gain = 1;
         // 噪音抑制
         sip_media_config.ns_enable = SDK_TRUE;
@@ -170,8 +143,10 @@ namespace sipmedia
 
         sip_media_config.video_op.codec_init = codec_init;
         sip_media_config.video_op.codec_deinit = codec_deinit;
-        sip_media_config.audio_op.get_audio_frame_from_stream = audio_frame_from_stream;
-        sip_media_config.audio_op.on_call_audio_media_stream = on_call_audio_media_stream;
+        sip_media_config.audio_op.read_audio_frame_from_stream = audio_frame_from_stream;
+        sip_media_config.audio_op.write_audio_media_stream = on_call_audio_media_stream;
+        // 组合sps pps idr
+        sip_media_config.combin_sps_pps_idr = SDK_TRUE;
         // 是否开启解码
         if (INIT_ENABLE_DECODE)
         {

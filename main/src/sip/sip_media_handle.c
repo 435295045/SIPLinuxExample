@@ -123,8 +123,6 @@ static sdk_status_t on_call_audio_media_stream(audio_media_frame media_frame)
 
 void media_init()
 {
-    /* 音频时钟速率 */
-    sip_media_config.audio_clock_rate = 16000;
     // 音频时钟速率
     sip_media_config.audio_clock_rate = 16000;
     // mic 增益
@@ -142,8 +140,8 @@ void media_init()
 
     sip_media_config.video_op.codec_init = codec_init;
     sip_media_config.video_op.codec_deinit = codec_deinit;
-    sip_media_config.audio_op.get_audio_frame_from_stream = audio_frame_from_stream;
-    sip_media_config.audio_op.on_call_audio_media_stream = on_call_audio_media_stream;
+    sip_media_config.audio_op.read_audio_frame_from_stream = audio_frame_from_stream;
+    sip_media_config.audio_op.write_audio_media_stream = on_call_audio_media_stream;
     // 是否开启解码
     if (INIT_ENABLE_DECODE)
     {

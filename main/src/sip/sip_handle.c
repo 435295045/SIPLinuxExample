@@ -1,7 +1,9 @@
 #include "sip_handle.h"
+#include "curl_license.h"
 
-#define SDK_LICENSE_CLIENT_ID "1298331664417689600"
-#define SDK_LICENSE_CLIENT_SECRET "26e0e4a3bfda52d95b283d5a6403c493"
+#define SDK_LICENSE_CLIENT_ID "1364998327518760960"
+#define SDK_LICENSE_CLIENT_SECRET "fe6a46f2e71857a93963eec77d67b04b"
+#define SDK_LICENSE_SERVER_URL "https://120.79.7.237/"
 #define SDK_LICENSE_AUTH_FILE "/data/device.json"
 
 // 初始化结束回调
@@ -131,6 +133,7 @@ static void on_call_state(sdk_uuid_t call_uuid, sdk_status_t state)
  * 注册回调函数
  */
 static sip_sdk_observer sdk_observer = {
+    NULL,
     &on_init_completed,
     &on_stop_completed,
     &on_registrar_state,
@@ -153,23 +156,52 @@ void init()
                                            SDK_LICENSE_CLIENT_SECRET,
                                            dev_uuid,
                                            SDK_LICENSE_AUTH_FILE,
-                                           JUN_ZHENG_AD_MIPS,
-                                           SDK_LICENSE_TYPE_TEST);
-
+                                           YI_ZHI_ARM,
+                                           SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS);
     if (status != 0)
     {
-        printf("sip sdk register error\n");
-        return;
+        // 检查文件是否存在
+        FILE *file = fopen(SDK_LICENSE_AUTH_FILE, "r");
+        if (file != NULL)
+        {
+            fclose(file);
+            return; // 文件存在直接返回
+        }
+
+        // 获取license
+        char info[1024] = {0};
+        int ret = sync_token(SDK_LICENSE_SERVER_URL,
+                             SDK_LICENSE_CLIENT_ID,
+                             SDK_LICENSE_CLIENT_SECRET,
+                             info);
+        if (!ret)
+        {
+            printf("sip sdk license error\n");
+            return;
+        }
+
+        // 写入文件
+        FILE *outfile = fopen(SDK_LICENSE_AUTH_FILE, "w");
+        if (!outfile)
+        {
+            printf("Failed to create file: %s\n", SDK_LICENSE_AUTH_FILE);
+            return;
+        }
+        fprintf(outfile, "%s", info);
+        fclose(outfile);
+        system("sync");
     }
 
     sip_sdk_config.sdk_run = SDK_TRUE;
     sip_sdk_config.port = 58581;
+    memset(sip_sdk_config.public_addr, 0, 64);
     sip_sdk_config.log_level = 4;
     sip_sdk_config.video_enable = SDK_TRUE;
     sip_sdk_config.video_out_auto_transmit = SDK_TRUE;
     sip_sdk_config.allow_multiple_connections = SDK_TRUE;
-    static char *user_agent = "JHCloud-linux-1.0";
-    sip_sdk_config.user_agent = user_agent;
+    char *user_agent = "linux-sdk-1.0";
+    memset(sip_sdk_config.user_agent, 0, 32);
+    memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
     sip_sdk_config.sdk_observer = &sdk_observer;
     sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
     // 初始化媒体
