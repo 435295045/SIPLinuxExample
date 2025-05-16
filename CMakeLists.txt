@@ -4,7 +4,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug) #Release Debug
-set(CM_BUILD_OPTION "arm") #x86_64 arm arm_ez mips
+set(CM_BUILD_OPTION "arm_ez") #x86_64 arm arm_ez mips
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
         set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -s")
@@ -42,6 +42,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm")
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
 elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
+        set(CMAKE_BUILD_RPATH "/data/libs")
         #配置编译工具链
         set(CMAKE_SYSTEM_PROCESSOR arm)
         set(tools /home/ubuntu/project/sip_linux_sdk/resources/gcc-7.4.0-x86_64_arm-ez-linux-uclibcgnueabihf)
@@ -54,6 +55,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/include
+                /home/ubuntu/project/lvgl/outdoor/main/libs/alsa/arm_ez/include
         )
 
         set(LIB_FILES 
@@ -62,6 +64,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libcrypto.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libssl.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/lib/libcurl_license.so
+                /home/ubuntu/project/lvgl/outdoor/main/libs/alsa/arm_ez/lib/libasound.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")

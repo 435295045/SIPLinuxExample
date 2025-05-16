@@ -269,7 +269,7 @@ namespace sip
     {
         // 初始化本地账号（这里初始化username，会将本地sip消息体中from由原有的sip:+ip改为sip:+username)
         sip_sdk_local_config local_config = {
-            .username = "test",
+            .username = "OD-1-1-1-1-0-3",
             .proxy = NULL,
             .proxy_port = 0,
             .enable_stream_control = SDK_FALSE,
@@ -279,22 +279,22 @@ namespace sip
         };
         local_account(local_config);
         // 注册到服务器
-        sip_sdk_registrar_config registrar_config = {
-            .domain = "test.com",
-            .username = "test",
-            .password = "123456",
-            .transport = "tcp",
-            .server_addr = "43.160.204.96",
-            .server_port = 5060,
-            .headers = {},
-            .proxy = "43.160.204.96",
-            .proxy_port = 5060,
-            .enable_stream_control = SDK_FALSE,
-            .stream_elapsed = 5,
-            .start_keyframe_count = 10,
-            .start_keyframe_interval = 1000,
-        };
-        registrar_account(registrar_config);
+        // sip_sdk_registrar_config registrar_config = {
+        //     .domain = "test.com",
+        //     .username = "test",
+        //     .password = "123456",
+        //     .transport = "tcp",
+        //     .server_addr = "43.160.204.96",
+        //     .server_port = 5060,
+        //     .headers = {},
+        //     .proxy = "43.160.204.96",
+        //     .proxy_port = 5060,
+        //     .enable_stream_control = SDK_FALSE,
+        //     .stream_elapsed = 5,
+        //     .start_keyframe_count = 10,
+        //     .start_keyframe_interval = 1000,
+        // };
+        // registrar_account(registrar_config);
     }
 
     /**

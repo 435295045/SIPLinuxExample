@@ -102,7 +102,7 @@ namespace sipmedia
             h264_file.write(reinterpret_cast<char *>(data), data_size);
         }
         mutex_file_write.unlock();
-        return -1;
+        return SDK_SUCCESS;
     }
 
     /**

@@ -199,7 +199,7 @@ void init()
     sip_sdk_config.video_enable = SDK_TRUE;
     sip_sdk_config.video_out_auto_transmit = SDK_TRUE;
     sip_sdk_config.allow_multiple_connections = SDK_TRUE;
-    char *user_agent = "linux-sdk-1.0";
+    char *user_agent = "JHCloud-linux-1.0";
     memset(sip_sdk_config.user_agent, 0, 32);
     memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
     sip_sdk_config.sdk_observer = &sdk_observer;
@@ -233,7 +233,7 @@ void registrar()
 {
     // 初始化本地账号（这里初始化username，会将本地sip消息体中from由原有的sip:+ip改为sip:+username)
     sip_sdk_local_config local_config = {
-        .username = "OD-1-1-1-1-0-8",
+        .username = "OD-1-1-1-1-0-3",
         .proxy = NULL,
         .proxy_port = 0,
         .enable_stream_control = SDK_FALSE,
@@ -243,22 +243,23 @@ void registrar()
     };
     local_account(local_config);
     // 注册到服务器
-    // sip_header sh = {"jwt", "需要服务器获取"};
-    // sip_sdk_registrar_config registrar_config = {
-    //     .domain = "jhws.top",
-    //     .username = (char *)username.c_str(),
-    //     .password = "123456",
-    //     .transport = "tcp",
-    //     .server_addr = "test.jhws.top",
-    //     .server_port = 58583,
-    //     .headers = {sh},
-    //     .proxy = "test.jhws.top",
-    //     .proxy_port = 58583,
-    //     .enable_rate_control = SDK_TRUE,
-    //     .start_keyframe_count = 120,
-    //     .start_keyframe_interval = 1000,
-    // };
-    // registrar_account(registrar_config);
+    sip_header sh = {"jwt", "dfdsfdsf"};
+    sip_sdk_registrar_config registrar_config = {
+        .domain = "jhws.top",
+        .username = "RM-1-1-1-1-0-3",
+        .password = "123456",
+        .transport = "tcp",
+        .server_addr = "new-sip.jhws.top",
+        .server_port = 58583,
+        .headers = {sh},
+        .proxy = "new-sip.jhws.top",
+        .proxy_port = 58583,
+        .enable_stream_control = SDK_FALSE,
+        .stream_elapsed = 5,
+        .start_keyframe_count = 10,
+        .start_keyframe_interval = 1000,
+    };
+    registrar_account(registrar_config);
 }
 
 /**
@@ -321,6 +322,8 @@ void callIP(const char *ip)
             },
         },
     };
+    sscp.transmit_sound = SDK_TRUE;
+    sscp.transmit_video = SDK_FALSE;
     make_call(&sscp);
     // 这里拿到呼叫uuid
 }

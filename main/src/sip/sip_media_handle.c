@@ -55,7 +55,7 @@ static sdk_status_t codec_encode(void *user_data,
     // memcpy(buf, buffer, buffer_size);
     // *buf_size = buffer_size;
     // *is_keyframe = frame_type;
-    return SDK_SUCCESS;
+    return -1;
 }
 
 /**
