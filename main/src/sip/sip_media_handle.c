@@ -32,30 +32,18 @@ sdk_status_t codec_init(sdk_uuid_t call_uuid,
 // uint8_t *buffer = (uint8_t *)malloc(640 * 480);
 // size_t buffer_size = 0;
 // int frame_type = 0;
+// 组合一个空 H.264 i帧数据，用于侦测数据
+static uint8_t empty_i_frame_nalu[] = {0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00};
 static sdk_status_t codec_encode(void *user_data,
                                  void *buf,
                                  unsigned *buf_size,
                                  sdk_bool_t *is_keyframe,
                                  sdk_bool_t required_keyframe)
 {
-    if (required_keyframe)
-    {
-        // 这里最好强制编码关键帧，这个时候对方客户端是需要关键帧的
-    }
-    // memset(buffer, 0, 640 * 480);
-    // SimulateCode *simulateCode = (SimulateCode *)user_data;
-    // // 从文件中读取帧
-    // int ret = simulateCode->h264_readnalu(buffer, &buffer_size, &frame_type);
-    // if (ret <= 0)
-    // {
-    //     printf("ReadNalu error 1\n");
-    //     usleep(1000 * 1000);
-    //     return SDK_ERROR_COMMON;
-    // }
-    // memcpy(buf, buffer, buffer_size);
-    // *buf_size = buffer_size;
-    // *is_keyframe = frame_type;
-    return -1;
+    *buf_size = 7;
+    *is_keyframe = SDK_TRUE;
+    memcpy(buf, empty_i_frame_nalu, 7);
+    return SDK_SUCCESS;
 }
 
 /**

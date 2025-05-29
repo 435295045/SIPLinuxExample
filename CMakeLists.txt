@@ -55,7 +55,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/arm_ez/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/include
-                /home/ubuntu/project/lvgl/outdoor/main/libs/alsa/arm_ez/include
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/alsa/arm_ez/include
         )
 
         set(LIB_FILES 
@@ -64,7 +64,7 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libcrypto.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/openssl/arm_ez/lib/libssl.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/lib/libcurl_license.so
-                /home/ubuntu/project/lvgl/outdoor/main/libs/alsa/arm_ez/lib/libasound.so
+                ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/alsa/arm_ez/lib/libasound.so
         )
 
         set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
