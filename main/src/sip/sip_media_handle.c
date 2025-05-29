@@ -35,6 +35,7 @@ sdk_status_t codec_init(sdk_uuid_t call_uuid,
 // 组合一个空 H.264 i帧数据，用于侦测数据
 static uint8_t empty_i_frame_nalu[] = {0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00};
 static sdk_status_t codec_encode(void *user_data,
+                                 sdk_timestamp_t timestamp,
                                  void *buf,
                                  unsigned *buf_size,
                                  sdk_bool_t *is_keyframe,
@@ -43,6 +44,7 @@ static sdk_status_t codec_encode(void *user_data,
     *buf_size = 7;
     *is_keyframe = SDK_TRUE;
     memcpy(buf, empty_i_frame_nalu, 7);
+    printf("-------------------------------------------------------------: 发送侦测帧\n");
     return SDK_SUCCESS;
 }
 

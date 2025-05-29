@@ -323,7 +323,7 @@ void callIP(const char *ip)
         },
     };
     sscp.transmit_sound = SDK_TRUE;
-    sscp.transmit_video = SDK_FALSE;
+    sscp.transmit_video = SDK_TRUE;
     make_call(&sscp);
     // 这里拿到呼叫uuid
 }

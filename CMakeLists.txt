@@ -66,8 +66,6 @@ elseif (${CM_BUILD_OPTION} STREQUAL "arm_ez")
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/curl_license/arm_ez/lib/libcurl_license.so
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/alsa/arm_ez/lib/libasound.so
         )
-
-        set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
 elseif (${CM_BUILD_OPTION} STREQUAL "mips")
         #配置编译工具链
         set(CMAKE_SYSTEM_PROCESSOR mips)
@@ -84,12 +82,10 @@ elseif (${CM_BUILD_OPTION} STREQUAL "mips")
         set(LIB_FILES 
                 ${CMAKE_CURRENT_SOURCE_DIR}/main/libs/sip/mips/lib/libsipsdk.so
         )
-
-        set(lib_l "-lpthread -lm -ldl -lstdc++ -lrt")
 endif ()
 
 file(GLOB_RECURSE SOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/main/src/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/main/src/*.c
 )
 
 add_executable(sip_example
@@ -99,5 +95,4 @@ add_executable(sip_example
 # 链接第三方静态库
 target_link_libraries(sip_example 
         -Wl,--start-group ${LIB_FILES} -Wl,--end-group
-        ${lib_l}
 )
