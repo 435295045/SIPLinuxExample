@@ -14,12 +14,12 @@ int main()
         if (i == 5)
         {
             //开启alsa
-            ualsa::open();
+            //ualsa::open();
             // 3s后测试呼叫
-            std::map<std::string, std::string> headers;
+            //std::map<std::string, std::string> headers;
             // 这里呼叫多个
             //sip::call("RM-1-1-1-1-1-6", headers);
-            sip::callIP("192.168.1.199", headers);
+            //sip::callIP("192.168.1.199", headers);
         }
     }
 

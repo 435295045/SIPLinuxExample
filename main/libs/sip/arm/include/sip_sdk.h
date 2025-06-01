@@ -1,5 +1,6 @@
 #ifndef __SIP_SDK_H__
 #define __SIP_SDK_H__
+#include <time.h>
 
 // 最大自定义消息头数量
 #define SDK_MAX_CUSTOM_HEADERS 5
@@ -68,15 +69,6 @@ extern "C"
         /* 通知对方发送关键帧 */
         SDK_MEDIA_NOTIFICATION_SEND_KEYFRAME = 10000,
     };
-
-    typedef enum
-    {
-        X86_64_UBUNTU = 0,
-        /** 亿智 arm 系列 */
-        YI_ZHI_ARM = X86_64_UBUNTU + 1,
-        /** 君正 MIPS ad 系列 */
-        JUN_ZHENG_MIPS_AD = YI_ZHI_ARM + 1,
-    } device_type;
 
     typedef enum
     {
@@ -193,6 +185,7 @@ extern "C"
         void (*on_message)(sip_sdk_message_param message_param);
         void (*on_message_state)(sdk_status_t state, sip_sdk_message_param message_param);
         void (*on_call_state)(sdk_uuid_t call_uuid, sdk_status_t state);
+        void (*expire_warning_callback)(time_t expire_time, time_t current_time);
     } sip_sdk_observer;
 
     typedef struct sip_sdk_common_config
@@ -219,8 +212,9 @@ extern "C"
                                   const char *client_secret,
                                   const char *device_uuid,
                                   const char *auth_file_path,
-                                  const device_type dev_type,
                                   const license_type lic_type);
+
+    sdk_status_t sip_sdk_license_info(char *info, size_t size);
 
     sdk_status_t sip_sdk_init();
 

@@ -1,6 +1,6 @@
 #ifndef __SIP_SDK_MEDIA_H__
 #define __SIP_SDK_MEDIA_H__
-
+#include <stddef.h>
 #include "sip_sdk.h"
 
 typedef enum

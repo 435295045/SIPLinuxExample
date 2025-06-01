@@ -168,6 +168,11 @@ namespace sip
         //  }
     }
 
+    void expire_warning_callback(time_t expire_time, time_t current_time)
+    {
+        printf("expire_warning_callback: %ld  %ld\n", expire_time, current_time);
+    }
+
     /**
      * 注册回调函数
      */
@@ -181,6 +186,7 @@ namespace sip
         &on_message,
         &on_message_state,
         &on_call_state,
+        &expire_warning_callback,
     };
 
     /**
@@ -189,14 +195,13 @@ namespace sip
     void init()
     {
         // 设备唯一ID
-        std::string dev_uuid = "test";
+        std::string dev_uuid = "test123456";
         // 注册 SDK
         sdk_status_t status = sip_sdk_register(SDK_LICENSE_CLIENT_ID,
                                                SDK_LICENSE_CLIENT_SECRET,
                                                dev_uuid.c_str(),
                                                SDK_LICENSE_AUTH_FILE,
-                                               YI_ZHI_ARM,
-                                               SDK_LICENSE_TYPE_AUTHORIZATION_ALWAYS);
+                                               SDK_LICENSE_TYPE_AUTHORIZATION_TIME);
         if (status != 0)
         {
             // 检查文件是否存在
