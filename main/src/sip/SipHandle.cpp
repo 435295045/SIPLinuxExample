@@ -1,5 +1,6 @@
 #include "SipHandle.hpp"
 #include "curl_license.h"
+#include "utils/AlsaUtils.hpp"
 
 #define SDK_LICENSE_CLIENT_ID "1364998327518760960"
 #define SDK_LICENSE_CLIENT_SECRET "fe6a46f2e71857a93963eec77d67b04b"
@@ -126,6 +127,12 @@ namespace sip
     std::map<sdk_uuid_t, void *> audio_port_s;
     void on_call_state(sdk_uuid_t call_uuid, sdk_status_t state)
     {
+        if (state == CALL_STATE_CONFIRMED)
+        {
+            // 开启alsa
+            ualsa::open();
+        }
+
         // 下面的代码可以单独获取每一路声音
         //  if (state == CALL_STATE_CONFIRMED)
         //  {
@@ -245,6 +252,14 @@ namespace sip
         memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
         sip_sdk_config.sdk_observer = &sdk_observer;
         sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
+        sip_sdk_stun_config stun_cfg = {
+            1, // count
+            {
+                "120.79.7.237:3478",
+            },
+            SDK_FALSE // enable_ipv6
+        };
+        sip_sdk_config.stun_config = stun_cfg;
         // 初始化媒体
         sipmedia::init();
         // 初始化sdk
@@ -284,22 +299,28 @@ namespace sip
         };
         local_account(local_config);
         // 注册到服务器
-        // sip_sdk_registrar_config registrar_config = {
-        //     .domain = "test.com",
-        //     .username = "test",
-        //     .password = "123456",
-        //     .transport = "tcp",
-        //     .server_addr = "43.160.204.96",
-        //     .server_port = 5060,
-        //     .headers = {},
-        //     .proxy = "43.160.204.96",
-        //     .proxy_port = 5060,
-        //     .enable_stream_control = SDK_FALSE,
-        //     .stream_elapsed = 5,
-        //     .start_keyframe_count = 10,
-        //     .start_keyframe_interval = 1000,
-        // };
-        // registrar_account(registrar_config);
+        sip_sdk_registrar_config registrar_config = {
+            .domain = "test.com",
+            .username = "test",
+            .password = "123456",
+            .transport = "tcp",
+            .server_addr = "43.160.204.96",
+            .server_port = 5060,
+            .headers = {},
+            .proxy = "43.160.204.96",
+            .proxy_port = 5060,
+            .enable_stream_control = SDK_FALSE,
+            .stream_elapsed = 5,
+            .start_keyframe_count = 10,
+            .start_keyframe_interval = 1000,
+            .turn_config = {
+                .enable = SDK_TRUE,
+                .server = "120.79.7.237:3478",
+                .realm = "120.79.7.237",
+                .username = "test",
+                .password = "test",
+            }};
+        registrar_account(registrar_config);
     }
 
     /**

@@ -2,7 +2,6 @@
 #include "sip_sdk_aec.h"
 #include <mutex>
 
-static void *aecInst = nullptr;
 static std::mutex mutex_play;
 static std::mutex mutex_read;
 
@@ -224,11 +223,6 @@ error:
 
 int ualsa::open()
 {
-    // 初始化消回音
-    if (!aecInst)
-    {
-        aecInst = aec_create(16000);
-    }
     open_play();
     open_read();
     return 0;
@@ -236,24 +230,24 @@ int ualsa::open()
 
 int ualsa::play(uint8_t *data, size_t size)
 {
-    // 加入播放声音
-    aec_farend(aecInst, (signed short int *)data, size);
     std::lock_guard<std::mutex> lock(mutex_play);
     if (!play_pcm)
     {
-        return -1;
+        return AUDIO_TIME_TYPE_INTERNAL;
     }
     int result = snd_pcm_writei(play_pcm, data, play_frames);
     if (result == -EPIPE)
     {
         printf("alsa play: underrun! \n");
         snd_pcm_prepare(play_pcm);
+        return AUDIO_TIME_TYPE_AUTONOMIC;
     }
     else if (result < 0)
     {
         printf("alsa play: error writing data! \n");
+        return AUDIO_TIME_TYPE_INTERNAL;
     }
-    return 0;
+    return AUDIO_TIME_TYPE_AUTONOMIC;
 }
 
 audio_media_frame *ualsa::read()
@@ -283,8 +277,6 @@ audio_media_frame *ualsa::read()
         printf("alsa read: error reading data!\n");
         goto error;
     }
-    // 消回音
-    aec_process(aecInst, (signed short int *)media_frame->buf, media_frame->size, 30);
     return media_frame;
 error:
     free_audio_media_frame(media_frame);
@@ -317,9 +309,4 @@ int ualsa::close()
 {
     close_play();
     close_read();
-    if (aecInst)
-    {
-        aec_destroy(aecInst);
-        aecInst = nullptr;
-    }
 }

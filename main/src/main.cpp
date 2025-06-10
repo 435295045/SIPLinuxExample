@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include "sip/SipHandle.hpp"
-#include "utils/AlsaUtils.hpp"
 
 int main()
 {
@@ -13,12 +12,10 @@ int main()
         sleep(1);
         if (i == 5)
         {
-            //开启alsa
-            //ualsa::open();
             // 3s后测试呼叫
-            //std::map<std::string, std::string> headers;
+            std::map<std::string, std::string> headers;
             // 这里呼叫多个
-            //sip::call("RM-1-1-1-1-1-6", headers);
+            sip::call("RM-1-1-1-1-1-9", headers);
             //sip::callIP("192.168.1.199", headers);
         }
     }

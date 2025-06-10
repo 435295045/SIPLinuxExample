@@ -204,7 +204,7 @@ void init()
     sip_sdk_config.video_enable = SDK_TRUE;
     sip_sdk_config.video_out_auto_transmit = SDK_TRUE;
     sip_sdk_config.allow_multiple_connections = SDK_TRUE;
-    char *user_agent = "JHCloud-linux-1.0";
+    char *user_agent = "linux-sdk-1.0";
     memset(sip_sdk_config.user_agent, 0, 32);
     memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
     sip_sdk_config.sdk_observer = &sdk_observer;
@@ -249,22 +249,22 @@ void registrar()
     local_account(local_config);
     // 注册到服务器
     sip_header sh = {"jwt", "dfdsfdsf"};
-    sip_sdk_registrar_config registrar_config = {
-        .domain = "jhws.top",
-        .username = "RM-1-1-1-1-0-3",
-        .password = "123456",
-        .transport = "tcp",
-        .server_addr = "new-sip.jhws.top",
-        .server_port = 58583,
-        .headers = {sh},
-        .proxy = "new-sip.jhws.top",
-        .proxy_port = 58583,
-        .enable_stream_control = SDK_FALSE,
-        .stream_elapsed = 5,
-        .start_keyframe_count = 10,
-        .start_keyframe_interval = 1000,
-    };
-    registrar_account(registrar_config);
+    // sip_sdk_registrar_config registrar_config = {
+    //     .domain = "test.com",
+    //     .username = "test",
+    //     .password = "123456",
+    //     .transport = "tcp",
+    //     .server_addr = "43.160.204.96",
+    //     .server_port = 5060,
+    //     .headers = {},
+    //     .proxy = "43.160.204.96",
+    //     .proxy_port = 5060,
+    //     .enable_stream_control = SDK_FALSE,
+    //     .stream_elapsed = 5,
+    //     .start_keyframe_count = 10,
+    //     .start_keyframe_interval = 1000,
+    // };
+    // registrar_account(registrar_config);
 }
 
 /**
