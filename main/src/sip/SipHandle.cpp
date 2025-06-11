@@ -4,7 +4,7 @@
 
 #define SDK_LICENSE_CLIENT_ID "1364998327518760960"
 #define SDK_LICENSE_CLIENT_SECRET "fe6a46f2e71857a93963eec77d67b04b"
-#define SDK_LICENSE_SERVER_URL "https://120.79.7.237/"
+#define SDK_LICENSE_SERVER_URL "https://api.mlscience.cn/"
 #define SDK_LICENSE_AUTH_FILE "/data/device.json"
 
 namespace sip

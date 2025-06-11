@@ -1,3 +1,4 @@
+#include <string>
 #include "PCMUtils.hpp"
 
 PCMUtils::PCMUtils()

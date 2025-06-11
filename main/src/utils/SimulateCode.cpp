@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "SimulateCode.hpp"
 
 SimulateCode::SimulateCode(std::string path)
