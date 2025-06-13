@@ -251,6 +251,7 @@ namespace sip
         memset(sip_sdk_config.user_agent, 0, 32);
         memcpy(sip_sdk_config.user_agent, user_agent, strlen(user_agent));
         sip_sdk_config.sdk_observer = &sdk_observer;
+        sip_sdk_config.transport_stun_server = SDK_FALSE;
         sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
         sip_sdk_stun_config stun_cfg = {
             1, // count

@@ -15,8 +15,8 @@ int main()
             // 3s后测试呼叫
             std::map<std::string, std::string> headers;
             // 这里呼叫多个
-            sip::call("RM-1-1-1-1-1-9", headers);
-            //sip::callIP("192.168.1.199", headers);
+            // sip::call("RM-1-1-1-1-1-9", headers);
+            sip::callIP("10.200.0.6", headers);
         }
     }
 
