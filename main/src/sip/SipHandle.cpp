@@ -254,7 +254,7 @@ namespace sip
         sip_sdk_config.transport_stun_server = SDK_FALSE;
         sip_sdk_config.does_it_support_broadcast = SDK_TRUE;
         sip_sdk_stun_config stun_cfg = {
-            1, // count
+            1, // 如果不需要Stun不配置或者设置0
             {
                 "120.79.7.237:3478",
             },
@@ -315,7 +315,7 @@ namespace sip
             .start_keyframe_count = 10,
             .start_keyframe_interval = 1000,
             .turn_config = {
-                .enable = SDK_TRUE,
+                .enable = SDK_TRUE, //如果不需要Turn不配置或者设置SDK_FALSE
                 .server = "120.79.7.237:3478",
                 .realm = "120.79.7.237",
                 .username = "test",
